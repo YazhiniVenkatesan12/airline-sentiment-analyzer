@@ -1,4 +1,5 @@
 # src/dashboard.py
+import os   
 import pandas as pd
 import streamlit as st
 import altair as alt
