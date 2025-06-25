@@ -105,20 +105,17 @@ The app will open at `http://localhost:8501/`.
 
 ---
 
-## 📊 Optional: Analytics Dashboard
+## 📊 Dashboard
 
-To view sentiment trends over time:
+Check out the live analytics dashboard:
 
-```bash
-streamlit run src/dashboard.py
-```
+👉 [View Dashboard](https://airline-sentiment-analyzer-dashboard.streamlit.app/)
 
-Dashboard will show:
+This includes:
+- Sentiment distribution
+- Sarcasm detection
+- Tweet activity over time
 
-* Sentiment frequency distribution
-* Average prediction confidence
-* Sarcasm detection ratio
-* Sentiment over time (line chart)
 
 ---
 
