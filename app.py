@@ -191,7 +191,8 @@ st.markdown(
     """
     <hr style='margin-top:2rem;'>
     <div style='text-align:center; font-size:0.9rem; color:#666;'>
-        View analytics dashboard → <a href="http://localhost:8501/dashboard" target="_blank">Dashboard</a> •
+        📊 View the <a href='/dashboard' target='_self'><b>Dashboard</b></a> for analytics.",
+    unsafe_allow_html=True
         GitHub repo → <a href="https://github.com/yourusername/sentiment-tweets" target="_blank">Source</a>
     </div>
     """,
