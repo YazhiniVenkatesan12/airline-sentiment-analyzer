@@ -44,7 +44,7 @@ st.markdown(
 )
 
 # ─────────────────────────  LOAD DATA  ─────────────────────────
-CSV = os.path.join(os.path.dirname(__file__),"C:/Users/hp/Documents/PROJECT/sentiment-tweets/data/cleaned_tweets.csv")
+CSV = os.path.join(os.path.dirname(__file__), "..", "data", "cleaned_tweets.csv")
 df = pd.read_csv(CSV)
 
 # Parse datetime safely
