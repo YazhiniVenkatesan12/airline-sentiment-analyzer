@@ -23,7 +23,7 @@ A real-time sentiment analyzer that classifies tweets related to airline service
 ## 🖼️ Demo
 
 ![demo](https://user-images.githubusercontent.com/yourgif.gif)  
-Try it live: [https://yourusername.streamlit.app](https://yourusername.streamlit.app)
+Try it live: [https://yourusername.streamlit.app](https://airline-sentiment-analyzer.streamlit.app/)
 
 ---
 
@@ -51,7 +51,7 @@ sentiment-tweets/
 
 ### 🔧 1. Clone the Repo
 ```bash
-git clone https://github.com/yourusername/sentiment-tweets.git
+git clone https://github.com/YazhiniVenkatesan12/airline-sentiment-analyzer.git
 cd sentiment-tweets
 ````
 
@@ -153,12 +153,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ```
 
----
 
-## ✅ What You Need to Do:
-- Replace `yourusername` and image links as needed.
-- Add a screenshot or `.gif` if possible (optional but recommended).
-- Push this as your `README.md` file in the root of the repo.
-
-Would you like me to generate the `requirements.txt` for this exact setup too?
-```
