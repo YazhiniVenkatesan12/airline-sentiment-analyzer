@@ -191,7 +191,7 @@ st.markdown(
     """
     <hr style='margin-top:2rem;'>
     <div style='text-align:center; font-size:0.9rem; color:#666;'>
-        <a href="https://airline-sentiment-analyzer-dashboard.streamlit.app/" target="_blank" style='color: #0E6BA8; text-decoration: none; font-weight: bold;'>
+        <a href="https://airline-sentiment-analyzer-dashboard.streamlit.app" target="_blank" style='color: #0E6BA8; text-decoration: none; font-weight: bold;'>
             📊 View Analytics Dashboard
         </a>
         GitHub repo → <a href="https://github.com/YazhiniVenkatesan12/airline-sentiment-analyzer" target="_blank">Source</a>
