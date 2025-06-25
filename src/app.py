@@ -192,7 +192,7 @@ st.markdown(
     <hr style='margin-top:2rem;'>
     <div style='text-align:center; font-size:0.9rem; color:#666;'>
         View analytics dashboard → <a href="http://localhost:8501/dashboard" target="_blank">Dashboard</a> •
-        GitHub repo → <a href="https://github.com/yourusername/sentiment-tweets" target="_blank">Source</a>
+        GitHub repo → <a href="https://github.com/YazhiniVenkatesan12/airline-sentiment-analyzer" target="_blank">Source</a>
     </div>
     """,
     unsafe_allow_html=True,
