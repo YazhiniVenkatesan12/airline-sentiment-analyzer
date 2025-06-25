@@ -2,7 +2,6 @@
 
 ![Streamlit](https://img.shields.io/badge/Built%20With-Streamlit-orange?logo=streamlit)
 ![HuggingFace](https://img.shields.io/badge/Model-RoBERTa-blueviolet?logo=huggingface)
-![License](https://img.shields.io/github/license/yourusername/sentiment-tweets)
 
 A real-time sentiment analyzer that classifies tweets related to airline services as **Positive**, **Neutral**, or **Negative**, with an integrated **sarcasm detector** to flag misleading emotional tone. Built using **RoBERTa models**, **Streamlit**, and **Transformers**.
 
@@ -127,21 +126,6 @@ Dashboard will show:
 
 * [`cardiffnlp/twitter-roberta-base-sentiment-latest`](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest)
 * [`cardiffnlp/twitter-roberta-base-irony`](https://huggingface.co/cardiffnlp/twitter-roberta-base-irony)
-
----
-
-## ✨ Future Improvements
-
-* Multi-language support
-* User authentication + feedback logging
-* Improved sarcasm visualization
-* Emoji-based sentiment enhancer
-
----
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
