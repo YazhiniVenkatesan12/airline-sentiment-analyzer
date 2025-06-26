@@ -3,6 +3,7 @@ import os, re, datetime as dt
 import streamlit as st
 import nltk, torch
 from nltk.corpus import stopwords
+from streamlit.components.v1 import html
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 
 # ──────────────────────────────────────────────
@@ -19,10 +20,16 @@ def clean(text: str) -> str:
 # ──────────────────────────────────────────────
 # 2. Sentiment model (RoBERTa)
 SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
 tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
-model     = AutoModelForSequenceClassification.from_pretrained(SENTIMENT_MODEL,
-    device_map=None,          # <- force full weight load
-    torch_dtype="auto")
+
+model = AutoModelForSequenceClassification.from_pretrained(
+    SENTIMENT_MODEL,
+    low_cpu_mem_usage=False,   # avoid meta tensors
+    torch_dtype="auto",        # loads fp16 if available
+    trust_remote_code=True     # safe for HF community models
+).to("cpu")                    # explicit device
+model.eval()
 LABELS    = ["negative", "neutral", "positive"]
 
 # ──────────────────────────────────────────────
@@ -39,7 +46,7 @@ sarcasm_model = pipeline(
 
 # ──────────────────────────────────────────────
 # 4. Page + global CSS
-st.set_page_config(page_title="Airline Tweet Analyzer", page_icon="✈️", layout="centered")
+st.set_page_config(page_title="Airline Tweet Analyzer", page_icon="✈️", layout="centered",initial_sidebar_state="expanded")
 
 st.markdown(
     """
@@ -111,6 +118,24 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+# ──────────────── Dark Mode Toggle ────────────────
+with st.container():
+    col1, col2 = st.columns([0.05, 0.95])
+    with col1:
+        dark_icon = "🌙" if not st.session_state.get("dark", False) else "☀️"
+        st.markdown(f"<h4 style='margin:0'>{dark_icon}</h4>", unsafe_allow_html=True)
+    with col2:
+        st.markdown("<h5 style='margin:0.3em 0 0 0;'>Toggle Theme</h5>", unsafe_allow_html=True)
+        st.session_state.dark = st.toggle(" ", label_visibility="collapsed", value=st.session_state.get("dark", False))
+
+# Apply dark mode styling
+if st.session_state.dark:
+    st.markdown("""
+        <style>
+            html { filter: invert(1) hue-rotate(180deg); }
+            img, video { filter: invert(1) hue-rotate(180deg); }
+        </style>
+    """, unsafe_allow_html=True)
 
 # ──────────────────────────────────────────────
 # 6. Sample tweets + input
@@ -128,7 +153,12 @@ def reset_form():
 sel_key = st.selectbox("Quick test tweets (optional):", list(samples.keys()), key="sample_select")
 default_text = samples[sel_key]
 
-tweet = st.text_area("Type or paste a tweet:", value=default_text, height=140, key="input_text")
+MAX_LEN = 280
+tweet = st.text_area(
+    "Type or paste a tweet:", value=default_text, height=140, max_chars=MAX_LEN, key="input_text"
+)
+st.write(f"✏️ {len(tweet)}/{MAX_LEN} characters")
+
 
 # ──────────────────────────────────────────────
 # 7. Buttons
@@ -156,11 +186,30 @@ if predict:
     emoji     = {"positive":"😊","neutral":"😐","negative":"😡"}[label]
 
     # Result card
-    st.markdown('<div class="result-card">', unsafe_allow_html=True)
-    st.markdown(f'<span class="emoji">{emoji}</span>', unsafe_allow_html=True)
-    st.markdown(f"<h2>{label.upper()}</h2>", unsafe_allow_html=True)
-    st.progress(int(conf))
-    st.markdown('</div>', unsafe_allow_html=True)
+    emoji_html = f"<span class='emoji' role='img' aria-label='{label}'>{emoji}</span>"
+
+    gauge_html = f"""
+    <div style='display:flex; justify-content:center;'>
+    <svg viewBox="0 0 36 36" width="110">
+        <path d="M18 2.084a15.916 15.916 0 1 1 0 31.832"
+            fill="none" stroke="#e6e6e6" stroke-width="3"/>
+        <path d="M18 2.084a15.916 15.916 0 0 1 0 {(conf/100)*31.832}"
+            fill="none" stroke="#0E6BA8" stroke-width="3" stroke-linecap="round"/>
+        <text x="18" y="20.35" text-anchor="middle"
+            fill="#0E6BA8" font-size="9" font-weight="600">{conf:.0f}%</text>
+    </svg>
+    </div>
+    """
+
+    result_html = f"""
+    <div class="result-card">
+        {emoji_html}
+        <h2>{label.upper()}</h2>
+        {gauge_html}
+    </div>
+    """
+    st.markdown(result_html, unsafe_allow_html=True)
+
 
     # Confidence breakdown
     with st.expander("Show confidence scores"):
@@ -191,10 +240,10 @@ st.markdown(
     """
     <hr style='margin-top:2rem;'>
     <div style='text-align:center; font-size:0.9rem; color:#666;'>
-        📊 View the <a href='/dashboard' target='_self'><b>Dashboard</b></a> for analytics.",
-    unsafe_allow_html=True
-        GitHub repo → <a href="https://github.com/yourusername/sentiment-tweets" target="_blank">Source</a>
+        📊 View the <a href="https://airline-sentiment-analyzer-dashboard.streamlit.app" target="_blank"><b>Dashboard</b></a> for analytics. •
+        GitHub repo → <a href="https://github.com/YazhiniVenkatesan12/airline-sentiment-analyzer" target="_blank">Source</a>
     </div>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
+

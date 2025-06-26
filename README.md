@@ -2,7 +2,6 @@
 
 ![Streamlit](https://img.shields.io/badge/Built%20With-Streamlit-orange?logo=streamlit)
 ![HuggingFace](https://img.shields.io/badge/Model-RoBERTa-blueviolet?logo=huggingface)
-![License](https://img.shields.io/github/license/yourusername/sentiment-tweets)
 
 A real-time sentiment analyzer that classifies tweets related to airline services as **Positive**, **Neutral**, or **Negative**, with an integrated **sarcasm detector** to flag misleading emotional tone. Built using **RoBERTa models**, **Streamlit**, and **Transformers**.
 
@@ -23,7 +22,7 @@ A real-time sentiment analyzer that classifies tweets related to airline service
 ## 🖼️ Demo
 
 ![demo](https://user-images.githubusercontent.com/yourgif.gif)  
-Try it live: [https://yourusername.streamlit.app](https://yourusername.streamlit.app)
+Try it live: [https://airline-sentiment-analyzer.streamlit.app](https://airline-sentiment-analyzer.streamlit.app/)
 
 ---
 
@@ -51,7 +50,7 @@ sentiment-tweets/
 
 ### 🔧 1. Clone the Repo
 ```bash
-git clone https://github.com/yourusername/sentiment-tweets.git
+git clone https://github.com/YazhiniVenkatesan12/airline-sentiment-analyzer.git
 cd sentiment-tweets
 ````
 
@@ -106,20 +105,17 @@ The app will open at `http://localhost:8501/`.
 
 ---
 
-## 📊 Optional: Analytics Dashboard
+## 📊 Dashboard
 
-To view sentiment trends over time:
+Check out the live analytics dashboard:
 
-```bash
-streamlit run src/dashboard.py
-```
+👉 [View Dashboard](https://airline-sentiment-analyzer-dashboard.streamlit.app/)
 
-Dashboard will show:
+This includes:
+- Sentiment distribution
+- Sarcasm detection
+- Tweet activity over time
 
-* Sentiment frequency distribution
-* Average prediction confidence
-* Sarcasm detection ratio
-* Sentiment over time (line chart)
 
 ---
 
@@ -127,21 +123,6 @@ Dashboard will show:
 
 * [`cardiffnlp/twitter-roberta-base-sentiment-latest`](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest)
 * [`cardiffnlp/twitter-roberta-base-irony`](https://huggingface.co/cardiffnlp/twitter-roberta-base-irony)
-
----
-
-## ✨ Future Improvements
-
-* Multi-language support
-* User authentication + feedback logging
-* Improved sarcasm visualization
-* Emoji-based sentiment enhancer
-
----
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
@@ -153,12 +134,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ```
 
----
 
-## ✅ What You Need to Do:
-- Replace `yourusername` and image links as needed.
-- Add a screenshot or `.gif` if possible (optional but recommended).
-- Push this as your `README.md` file in the root of the repo.
-
-Would you like me to generate the `requirements.txt` for this exact setup too?
-```
