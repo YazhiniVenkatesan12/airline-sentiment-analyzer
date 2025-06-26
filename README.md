@@ -24,7 +24,12 @@ A real-time sentiment analyzer that classifies tweets related to airline service
 ![demo](https://user-images.githubusercontent.com/yourgif.gif)  
 Try it live: [https://airline-sentiment-analyzer.streamlit.app](https://airline-sentiment-analyzer.streamlit.app/)
 
----
+<p align="center">
+  <img src="images/app_home1.png" width="45%" alt="img 1"/>
+  &nbsp;
+  <img src="images/app_home2.png" width="45%" alt="img 2"/>
+</p>
+
 ---
 
 ## 📊 Dashboard
@@ -32,6 +37,13 @@ Try it live: [https://airline-sentiment-analyzer.streamlit.app](https://airline-
 Check out the live analytics dashboard:
 
 👉 [View Dashboard](https://airline-sentiment-analyzer-dashboard.streamlit.app/)
+
+<p align="center">
+  <img src="images/dashboard_view1.png" width="45%" alt="img 1"/>
+  &nbsp;
+  <img src="images/dashboard_view2.png" width="45%" alt="img 2"/>
+</p>
+
 
 This includes:
 - Sentiment distribution
