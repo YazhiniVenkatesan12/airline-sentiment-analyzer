@@ -25,11 +25,13 @@ tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
 
 model = AutoModelForSequenceClassification.from_pretrained(
     SENTIMENT_MODEL,
-    low_cpu_mem_usage=False,   # avoid meta tensors
-    torch_dtype="auto",        # loads fp16 if available
-    trust_remote_code=True     # safe for HF community models
-).to("cpu")                    # explicit device
-model.eval()
+    low_cpu_mem_usage=False,   
+    device_map=None,           
+    torch_dtype="auto",        
+    trust_remote_code=True
+)
+model.eval()                  # inference mode
+
 LABELS    = ["negative", "neutral", "positive"]
 
 # ──────────────────────────────────────────────
