@@ -25,6 +25,21 @@ A real-time sentiment analyzer that classifies tweets related to airline service
 Try it live: [https://airline-sentiment-analyzer.streamlit.app](https://airline-sentiment-analyzer.streamlit.app/)
 
 ---
+---
+
+## 📊 Dashboard
+
+Check out the live analytics dashboard:
+
+👉 [View Dashboard](https://airline-sentiment-analyzer-dashboard.streamlit.app/)
+
+This includes:
+- Sentiment distribution
+- Sarcasm detection
+- Tweet activity over time
+
+
+---
 
 ## 📁 Project Structure
 
@@ -35,6 +50,9 @@ sentiment-tweets/
 │   ├── app.py           # Main Streamlit UI
 │   └── dashboard.py     # Optional analytics dashboard
 ├── models/              # (Optional) Trained pipeline files
+├── data/
+│   ├── Tweets.csv
+│   └── cleaned_tweets.csv          
 ├── logs/
 │   └── predictions.csv  # Auto-generated logs
 ├── .streamlit/
@@ -102,21 +120,6 @@ The app will open at `http://localhost:8501/`.
    ```bash
    streamlit run src/app.py --server.port=10000
    ```
-
----
-
-## 📊 Dashboard
-
-Check out the live analytics dashboard:
-
-👉 [View Dashboard](https://airline-sentiment-analyzer-dashboard.streamlit.app/)
-
-This includes:
-- Sentiment distribution
-- Sarcasm detection
-- Tweet activity over time
-
-
 ---
 
 ## 🤖 Models Used
