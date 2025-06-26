@@ -191,18 +191,20 @@ if predict:
     emoji_html = f"<span class='emoji' role='img' aria-label='{label}'>{emoji}</span>"
 
     gauge_html = f"""
-    <div style='display:flex; justify-content:center;'>
-    <svg viewBox="0 0 36 36" width="110">
-        <path d="M18 2.084a15.916 15.916 0 1 1 0 31.832"
-            fill="none" stroke="#e6e6e6" stroke-width="3"/>
-        <path d="M18 2.084a15.916 15.916 0 0 1 0 {(conf/100)*31.832}"
-            fill="none" stroke="#0E6BA8" stroke-width="3" stroke-linecap="round"/>
-        <text x="18" y="20.35" text-anchor="middle"
-            fill="#0E6BA8" font-size="9" font-weight="600">{conf:.0f}%</text>
-    </svg>
-    </div>
-    """
-
+        <div style="display: flex; justify-content: center; align-items: center; margin: 1rem 0;">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+            <circle cx="60" cy="60" r="54" stroke="#e6e6e6" stroke-width="12" fill="none" />
+            <circle cx="60" cy="60" r="54"
+                    stroke="#0E6BA8"
+                    stroke-width="12"
+                    fill="none"
+                    stroke-dasharray="{round(conf*3.39)} 339.292"
+                    stroke-linecap="round"
+                    transform="rotate(-90 60 60)" />
+            <text x="60" y="65" text-anchor="middle" fill="#0E6BA8" font-size="22px" font-weight="bold">{conf:.0f}%</text>
+        </svg>
+        </div>
+        """
     result_html = f"""
     <div class="result-card">
         {emoji_html}
