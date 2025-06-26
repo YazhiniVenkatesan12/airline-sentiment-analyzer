@@ -69,6 +69,7 @@ sentiment-tweets/
 │   └── predictions.csv  # Auto-generated logs
 ├── .streamlit/
 │   └── config.toml      # Custom UI config (optional)
+├── images/              # ScreenShots
 ├── requirements.txt     # All dependencies
 └── README.md            # You're here
 
