@@ -49,33 +49,9 @@ This includes:
 - Sentiment distribution
 - Sarcasm detection
 - Tweet activity over time
-
-
+- 
 ---
 
-## 📁 Project Structure
-
-```
-
-sentiment-tweets/
-├── src/
-│   ├── app.py           # Main Streamlit UI
-│   └── dashboard.py     # Optional analytics dashboard
-├── models/              # (Optional) Trained pipeline files
-├── data/
-│   ├── Tweets.csv
-│   └── cleaned_tweets.csv          
-├── logs/
-│   └── predictions.csv  # Auto-generated logs
-├── .streamlit/
-│   └── config.toml      # Custom UI config (optional)
-├── images/              # ScreenShots
-├── requirements.txt     # All dependencies
-└── README.md            # You're here
-
-````
-
----
 
 ## 🚀 Getting Started
 
