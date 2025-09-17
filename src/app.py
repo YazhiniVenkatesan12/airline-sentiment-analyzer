@@ -21,17 +21,20 @@ def clean(text: str) -> str:
 # 2. Sentiment model (RoBERTa)
 SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 
-tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
+@st.cache_resource
+def load_sentiment_model():
+    tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        SENTIMENT_MODEL,
+        low_cpu_mem_usage=False,
+        device_map=None,
+        torch_dtype="auto",
+        trust_remote_code=True
+    )
+    model.eval()
+    return tokenizer, model
 
-model = AutoModelForSequenceClassification.from_pretrained(
-    SENTIMENT_MODEL,
-    low_cpu_mem_usage=False,   
-    device_map=None,           
-    torch_dtype="auto",        
-    trust_remote_code=True
-)
-model.eval()                  # inference mode
-
+tokenizer, model = load_sentiment_model()
 LABELS    = ["negative", "neutral", "positive"]
 
 # ──────────────────────────────────────────────
