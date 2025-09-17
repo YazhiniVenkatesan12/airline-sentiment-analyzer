@@ -199,7 +199,15 @@ if predict:
             st.stop()
 
         outputs = model(**tokens)
-        probs = torch.softmax(outputs.logits, dim=1).squeeze().cpu().tolist()
+        
+        logits = outputs.logits
+        if isinstance(logits, torch.Tensor):
+            logits = logits.detach().cpu()
+        else:
+            st.error(f"Unexpected logits type: {type(logits)}")
+            st.stop()
+
+        probs = torch.softmax(logits, dim=1).squeeze().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
     label_idx  = int(torch.argmax(scores))  # now argmax works
