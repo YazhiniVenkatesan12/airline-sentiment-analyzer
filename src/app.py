@@ -179,7 +179,7 @@ clear   = col2.button("Reset", on_click=reset_form)
 if predict:
     txt = tweet.strip()
     if not txt:
-        st.warning("Please enter a tweet 😊")
+        st.warning("Please enter a tweet")
         st.stop()
 
     # Sentiment prediction
