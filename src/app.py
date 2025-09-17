@@ -184,24 +184,24 @@ if predict:
         st.stop()
 
     with torch.no_grad():
-    cleaned = clean(txt)
+        cleaned = clean(txt)
 
-    tokens = tokenizer(
-        cleaned,
-        return_tensors="pt",
-        truncation=True,
-        padding=True,
-        max_length=tokenizer.model_max_length  # keep within model’s limits
-    )
+        tokens = tokenizer(
+            cleaned,
+            return_tensors="pt",
+            truncation=True,
+            padding=True,
+            max_length=tokenizer.model_max_length  # keep within model’s limits
+        )
 
-    # Ensure we have the keys model expects
-    if "input_ids" not in tokens or tokens["input_ids"].numel() == 0:
-        st.error("❌ Could not tokenize input. Try a different tweet.")
-        st.stop()
+        # Ensure we have the keys model expects
+        if "input_ids" not in tokens or tokens["input_ids"].numel() == 0:
+            st.error("❌ Could not tokenize input. Try a different tweet.")
+            st.stop()
 
-    outputs = model(**tokens)
+        outputs = model(**tokens)
 
-    probs = torch.softmax(outputs.logits, dim=1).squeeze().cpu().tolist()
+        probs = torch.softmax(outputs.logits, dim=1).squeeze().cpu().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
     label_idx  = int(torch.argmax(scores))  # now argmax works
