@@ -19,7 +19,7 @@ def clean(text: str) -> str:
 
 # ──────────────────────────────────────────────
 # 2. Sentiment model (RoBERTa)
-SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+SENTIMENT_MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
 
 @st.cache_resource
 def load_sentiment_model():
