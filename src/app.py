@@ -181,12 +181,12 @@ if predict:
 
     # Sentiment prediction
     with torch.no_grad():
-    cleaned = clean(txt)
-    tokens = tokenizer(cleaned, return_tensors="pt", truncation=True, padding=True)
-    if tokens["input_ids"].shape[1] == 0:
-        st.error("❌ Could not process input (tweet became empty after cleaning).")
-        st.stop()
-    probs = torch.softmax(model(**tokens).logits, dim=1).squeeze().tolist()
+        cleaned = clean(txt)
+        tokens = tokenizer(cleaned, return_tensors="pt", truncation=True, padding=True)
+        if tokens["input_ids"].shape[1] == 0:
+            st.error("❌ Could not process input (tweet became empty after cleaning).")
+            st.stop()
+        probs = torch.softmax(model(**tokens).logits, dim=1).squeeze().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
     label_idx  = int(torch.argmax(scores))  # now argmax works
