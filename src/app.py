@@ -18,40 +18,33 @@ def clean(text: str) -> str:
     )
 
 # ──────────────────────────────────────────────
-# 2. Sentiment model (RoBERTa) - cached
+# 2. Sentiment model (RoBERTa)
 SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 
-@st.cache_resource
-def load_sentiment_model():
-    tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
-    model = AutoModelForSequenceClassification.from_pretrained(
-        SENTIMENT_MODEL,
-        torch_dtype="auto",
-        trust_remote_code=True
-    )
-    model.eval()
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
-    return model, tokenizer, device
+tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
 
-model, tokenizer, device = load_sentiment_model()
-LABELS = ["negative", "neutral", "positive"]
+model = AutoModelForSequenceClassification.from_pretrained(
+    SENTIMENT_MODEL,
+    low_cpu_mem_usage=False,   
+    device_map=None,           
+    torch_dtype="auto",        
+    trust_remote_code=True
+)
+model.eval()                  # inference mode
+
+LABELS    = ["negative", "neutral", "positive"]
 
 # ──────────────────────────────────────────────
-# 3. Sarcasm model (fast RoBERTa) - cached
-@st.cache_resource
-def load_sarcasm_pipeline():
-    return pipeline(
-        "text-classification",
-        model="cardiffnlp/twitter-roberta-base-irony",
-        tokenizer="cardiffnlp/twitter-roberta-base-irony",
-        device=0 if torch.cuda.is_available() else -1,
-        use_fast=True,
-        trust_remote_code=True,
-        revision="main",
-    )
-
-sarcasm_model = load_sarcasm_pipeline()
+# 3. Sarcasm model (fast RoBERTa)
+sarcasm_model = pipeline(
+    "text-classification",
+    model="cardiffnlp/twitter-roberta-base-irony",
+    tokenizer="cardiffnlp/twitter-roberta-base-irony",
+    device=0 if torch.cuda.is_available() else -1,
+    use_fast=True,
+    trust_remote_code=True,
+    revision="main",
+)
 
 # ──────────────────────────────────────────────
 # 4. Page + global CSS
@@ -168,6 +161,7 @@ tweet = st.text_area(
 )
 st.write(f"✏️ {len(tweet)}/{MAX_LEN} characters")
 
+
 # ──────────────────────────────────────────────
 # 7. Buttons
 col1, col2 = st.columns(2)
@@ -179,12 +173,12 @@ clear   = col2.button("Reset", on_click=reset_form)
 if predict:
     txt = tweet.strip()
     if not txt:
-        st.warning("Please enter a tweet")
+        st.warning("Please enter a tweet 😊")
         st.stop()
 
     # Sentiment prediction
     with torch.no_grad():
-        tokens = tokenizer(clean(txt), return_tensors="pt", truncation=True, padding=True).to(device)
+        tokens = tokenizer(clean(txt), return_tensors="pt", truncation=True, padding=True)
         probs  = torch.softmax(model(**tokens).logits, dim=1).squeeze().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
@@ -219,7 +213,8 @@ if predict:
     </div>
     """
 
-    st.markdown(result_html, unsafe_allow_html=True)
+    st.markdown(result_html, unsafe_allow_html=True)   # ← renders the circle
+
 
     # Confidence breakdown
     with st.expander("Show confidence scores"):
