@@ -27,7 +27,7 @@ def load_sentiment_model():
     model = AutoModelForSequenceClassification.from_pretrained(
         SENTIMENT_MODEL,
         low_cpu_mem_usage=False,
-        device_map=None,
+        device_map="cpu",
         torch_dtype="auto",
         trust_remote_code=True
     )
@@ -181,8 +181,12 @@ if predict:
 
     # Sentiment prediction
     with torch.no_grad():
-        tokens = tokenizer(clean(txt), return_tensors="pt", truncation=True, padding=True)
-        probs  = torch.softmax(model(**tokens).logits, dim=1).squeeze().tolist()
+    cleaned = clean(txt)
+    tokens = tokenizer(cleaned, return_tensors="pt", truncation=True, padding=True)
+    if tokens["input_ids"].shape[1] == 0:
+        st.error("❌ Could not process input (tweet became empty after cleaning).")
+        st.stop()
+    probs = torch.softmax(model(**tokens).logits, dim=1).squeeze().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
     label_idx  = int(torch.argmax(scores))  # now argmax works
