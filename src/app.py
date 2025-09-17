@@ -21,24 +21,17 @@ def clean(text: str) -> str:
 # 2. Sentiment model (RoBERTa)
 SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 
-@st.cache_resource
-def load_sentiment_model():
-    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
 
-    model_name = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+model = AutoModelForSequenceClassification.from_pretrained(
+    SENTIMENT_MODEL,
+    low_cpu_mem_usage=False,   
+    device_map=None,           
+    torch_dtype="auto",        
+    trust_remote_code=True
+)
+model.eval()                  # inference mode
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-
-    # CardiffNLP Twitter sentiment model → 3 labels
-    model = AutoModelForSequenceClassification.from_pretrained(
-        model_name,
-        num_labels=3  # negative / neutral / positive
-    )
-
-    model.eval()
-    return tokenizer, model
-
-tokenizer, model = load_sentiment_model()
 LABELS    = ["negative", "neutral", "positive"]
 
 # ──────────────────────────────────────────────
@@ -183,15 +176,15 @@ if predict:
         st.warning("Please enter a tweet 😊")
         st.stop()
 
+    # Sentiment prediction
     with torch.no_grad():
         cleaned = clean(txt)
-
         tokens = tokenizer(
             cleaned,
             return_tensors="pt",
             truncation=True,
             padding=True,
-            max_length=128   # avoid OverflowError
+            max_length=128  # safe max_length
         )
 
         if "input_ids" not in tokens or tokens["input_ids"].numel() == 0:
@@ -199,18 +192,17 @@ if predict:
             st.stop()
 
         outputs = model(**tokens)
-        
+
+        # Safe logits handling for Streamlit Cloud
         logits = outputs.logits
         if isinstance(logits, torch.Tensor):
-            logits = logits.detach().cpu()
+            probs = torch.softmax(logits, dim=1)
+            probs = probs.squeeze().tolist()  # convert tensor → list
         else:
-            st.error(f"Unexpected logits type: {type(logits)}")
+            st.error("❌ Model did not return logits as a tensor.")
             st.stop()
 
-        probs = torch.softmax(logits, dim=1).squeeze().tolist()
-
-    scores     = torch.tensor(probs)        # convert list → Tensor
-    label_idx  = int(torch.argmax(scores))  # now argmax works
+    label_idx  = int(torch.argmax(torch.tensor(probs)))  # now argmax works
     label     = LABELS[label_idx]
     conf      = probs[label_idx] * 100
     emoji     = {"positive":"😊","neutral":"😐","negative":"😡"}[label]
