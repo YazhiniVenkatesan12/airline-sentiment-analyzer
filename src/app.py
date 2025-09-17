@@ -191,16 +191,14 @@ if predict:
             return_tensors="pt",
             truncation=True,
             padding=True,
-            max_length=tokenizer.model_max_length  # keep within model’s limits
+            max_length=512   # avoid OverflowError
         )
 
-        # Ensure we have the keys model expects
         if "input_ids" not in tokens or tokens["input_ids"].numel() == 0:
             st.error("❌ Could not tokenize input. Try a different tweet.")
             st.stop()
 
         outputs = model(**tokens)
-
         probs = torch.softmax(outputs.logits, dim=1).squeeze().cpu().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
