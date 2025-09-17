@@ -191,7 +191,7 @@ if predict:
             return_tensors="pt",
             truncation=True,
             padding=True,
-            max_length=512   # avoid OverflowError
+            max_length=128   # avoid OverflowError
         )
 
         if "input_ids" not in tokens or tokens["input_ids"].numel() == 0:
