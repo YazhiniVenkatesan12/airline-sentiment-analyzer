@@ -19,18 +19,22 @@ def clean(text: str) -> str:
 
 # ──────────────────────────────────────────────
 # 2. Sentiment model (RoBERTa)
-SENTIMENT_MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
+SENTIMENT_MODEL = "cardiffnlp/twitter-roberta-base-sentiment-latest"
 
 @st.cache_resource
 def load_sentiment_model():
-    tokenizer = AutoTokenizer.from_pretrained(SENTIMENT_MODEL)
+    from transformers import AutoTokenizer, AutoModelForSequenceClassification
+
+    model_name = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    # CardiffNLP Twitter sentiment model → 3 labels
     model = AutoModelForSequenceClassification.from_pretrained(
-        SENTIMENT_MODEL,
-        low_cpu_mem_usage=False,
-        device_map="cpu",
-        torch_dtype="auto",
-        trust_remote_code=True
+        model_name,
+        num_labels=3  # negative / neutral / positive
     )
+
     model.eval()
     return tokenizer, model
 
@@ -179,14 +183,10 @@ if predict:
         st.warning("Please enter a tweet 😊")
         st.stop()
 
-    # Sentiment prediction
     with torch.no_grad():
         cleaned = clean(txt)
         tokens = tokenizer(cleaned, return_tensors="pt", truncation=True, padding=True)
-        if tokens["input_ids"].shape[1] == 0:
-            st.error("❌ Could not process input (tweet became empty after cleaning).")
-            st.stop()
-        probs = torch.softmax(model(**tokens).logits, dim=1).squeeze().tolist()
+        probs = torch.softmax(model(**tokens).logits, dim=1).squeeze().cpu().tolist()
 
     scores     = torch.tensor(probs)        # convert list → Tensor
     label_idx  = int(torch.argmax(scores))  # now argmax works
